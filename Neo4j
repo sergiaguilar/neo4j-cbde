@@ -111,13 +111,13 @@ CREATE (PtyC) -[:HAS]-> (P4)
 
 //Nation -> Lineitem
 
-CREATE (Spain) -[:HASLINEITEM]-> (L1)
-CREATE (Spain) -[:HASLINEITEM]-> (L2)
-CREATE (Germany) -[:HASLINEITEM]-> (L3)
-CREATE (Germany) -[:HASLINEITEM]-> (L1)
-CREATE (USA) -[:HASLINEITEM]-> (L2)
-CREATE (USA) -[:HASLINEITEM]-> (L1)
-CREATE (Canada) -[:HASLINEITEM]-> (L1)
+CREATE (Spain) -[:HASLINEITEM {SameNationAsClient: 1}]-> (L1)
+CREATE (Spain) -[:HASLINEITEM {SameNationAsClient: 0}]-> (L2)
+CREATE (Germany) -[:HASLINEITEM {SameNationAsClient: 1}]-> (L3)
+CREATE (Germany) -[:HASLINEITEM {SameNationAsClient: 1}]-> (L1)
+CREATE (USA) -[:HASLINEITEM {SameNationAsClient: 0}]-> (L2)
+CREATE (USA) -[:HASLINEITEM {SameNationAsClient: 1}]-> (L1)
+CREATE (Canada) -[:HASLINEITEM {SameNationAsClient: 1}]-> (L1)
 
 //Nation -> Supplier
 
@@ -127,6 +127,7 @@ CREATE (Germany) -[:HASSUPPLIER]-> (S1)
 CREATE (USA) -[:HASSUPPLIER]-> (S1)
 CREATE (USA) -[:HASSUPPLIER]-> (S3)
 CREATE (Canada) -[:HASSUPPLIER]-> (S4)
+CREATE (Canada) -[:HASSUPLLIER]-> (S1)
 
 //Query1
 
@@ -192,7 +193,7 @@ ORDER BY
 
 MATCH (o:Order) -[:HAS]-> (l:Lineitem) -[:HAS]-> (s:Supplier)
 WHERE o.o_orderdate >= 20170101 AND o.o_orderdate <= 20180101
-MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASSUPPLIER]-> (s)
+MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASSUPPLIER]-> (s) <-[:HASLINEITEM {SameNationAsClient: 1}]- (:Nation)
 WHERE r.r_name = "America"
 WITH n, SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
 RETURN n.n_name, revenue
