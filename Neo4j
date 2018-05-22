@@ -45,10 +45,10 @@ CREATE(L5: Lineitem {l_returnflag: "B", l_linestatus: "N", l_quantity: 7, l_exte
 
 //Orders
 
-CREATE(O1: Order { o_orderkey: 1, o_orderdate:20170723 , o_shippriority: 10})
-CREATE(O2: Order { o_orderkey: 2, o_orderdate:20150101 , o_shippriority: 5})
-CREATE(O3: Order { o_orderkey: 3, o_orderdate:20161010 , o_shippriority: 3})
-CREATE(O4: Order { o_orderkey: 4, o_orderdate:20171212 , o_shippriority: 2})
+CREATE(O1: Order { o_orderkey: 1, o_orderdate: 20170723 , o_shippriority: 10})
+CREATE(O2: Order { o_orderkey: 2, o_orderdate: 20170101 , o_shippriority: 5})
+CREATE(O3: Order { o_orderkey: 3, o_orderdate: 20171010 , o_shippriority: 3})
+CREATE(O4: Order { o_orderkey: 4, o_orderdate: 20171212 , o_shippriority: 2})
 
 //Mktsegments
 
@@ -58,12 +58,12 @@ CREATE(MK3: Mktsegment { c_mktsegment: "MK3"})
 
 //Order -[l_shipdate]-> Lineitem
 
-CREATE (O1) -[:HAS {l_orderdate: 20180101}]-> (L1)
-CREATE (O1) -[:HAS {l_orderdate: 20170101}]-> (L2)
-CREATE (O2) -[:HAS {l_orderdate: 20180101}]-> (L3)
-CREATE (O3) -[:HAS {l_orderdate: 20180101}]-> (L1)
-CREATE (O4) -[:HAS {l_orderdate: 20170101}]-> (L5)
-CREATE (O4) -[:HAS {l_orderdate: 20180101}]-> (L1)
+CREATE (O1) -[:HAS {l_shipdate: 20180101}]-> (L1)
+CREATE (O1) -[:HAS {l_shipdate: 20170101}]-> (L2)
+CREATE (O2) -[:HAS {l_shipdate: 20180101}]-> (L3)
+CREATE (O3) -[:HAS {l_shipdate: 20180101}]-> (L1)
+CREATE (O4) -[:HAS {l_shipdate: 20170101}]-> (L5)
+CREATE (O4) -[:HAS {l_shipdate: 20180101}]-> (L1)
 
 //Supplier -[ps_supplycost]-> Part
 
@@ -108,7 +108,24 @@ CREATE (PtyB) -[:HAS]-> (P2)
 CREATE (PtyD) -[:HAS]-> (P3)
 CREATE (PtyC) -[:HAS]-> (P4)
 
+//Nation -> Lineitem
 
+CREATE (Spain) -[:HASLINEITEM]-> (L1)
+CREATE (Spain) -[:HASLINEITEM]-> (L2)
+CREATE (Germany) -[:HASLINEITEM]-> (L3)
+CREATE (Germany) -[:HASLINEITEM]-> (L1)
+CREATE (USA) -[:HASLINEITEM]-> (L2)
+CREATE (USA) -[:HASLINEITEM]-> (L1)
+CREATE (Canada) -[:HASLINEITEM]-> (L1)
+
+//Nation -> Supplier
+
+CREATE (Spain) -[:HASSUPPLIER]-> (S1)
+CREATE (Spain) -[:HASSUPPLIER]-> (S2)
+CREATE (Germany) -[:HASSUPPLIER]-> (S1)
+CREATE (USA) -[:HASSUPPLIER]-> (S1)
+CREATE (USA) -[:HASSUPPLIER]-> (S3)
+CREATE (Canada) -[:HASSUPPLIER]-> (S4)
 
 //Query1
 
@@ -135,3 +152,11 @@ ORDER BY l_returnflag, l_linestatus;
 //Query3
 
 //Query4
+
+MATCH (o:Order) -[:HAS]-> (l:Lineitem) -[:HAS]-> (s:Supplier)
+WHERE o.o_orderdate >= 20170101 AND o.o_orderdate <= 20180101
+MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASSUPPLIER]-> (s)
+WHERE r.r_name = "America"
+WITH n, SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
+RETURN n.n_name, revenue
+ORDER BY revenue DESC;
