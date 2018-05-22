@@ -191,7 +191,7 @@ ORDER BY
 	
 //Query4
 
-MATCH (o:Order) -[:HAS]-> (l:Lineitem) -[:HAS]-> (s:Supplier)
+MATCH (o:Order) -[:HAS]-> (l:Lineitem)
 WHERE o.o_orderdate >= 20170101 AND o.o_orderdate <= 20180101
 MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASLINEITEM {SameNationAsClient: 1}]-> (l)
 WITH n, SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
