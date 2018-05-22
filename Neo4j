@@ -1,0 +1,36 @@
+//Regions
+
+//Nations
+
+//Suppliers
+
+CREATE(Supplier1: Supplier{s
+
+//Parts
+
+//Part_size
+
+CREATE(Psz10: Partsize { partsize: 10})
+CREATE(Psz20: Partsize { partsize: 20})
+CREATE(Psz30: Partsize { partsize: 30})
+
+//Part_type
+
+CREATE(PtyA: Parttype { parttype: "A"})
+CREATE(PtyB: Parttype { parttype: "B"})
+CREATE(PtyC: Parttype { parttype: "C"})
+CREATE(PtyD: Parttype { parttype: "D"})
+
+//Lineitems
+
+//Orders
+
+CREATE(O1: Order{ o_orderkey: 1, o_orderdate: , o_shippriority: 10})
+CREATE(O2: Order{ o_orderkey: 2, o_orderdate: , o_shippriority: 5})
+CREATE(O3: Order{ o_orderkey: 3, o_orderdate: , o_shippriority: 3})
+CREATE(O4: Order{ o_orderkey: 4, o_orderdate: , o_shippriority: 2})
+
+//Mktsegments
+
+
+
