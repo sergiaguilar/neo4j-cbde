@@ -58,12 +58,12 @@ CREATE(MK3: Mktsegment { c_mktsegment: "MK3"})
 
 //Order -[l_shipdate]-> Lineitem
 
-CREATE (O1) -[:HAS {l_orderdate: 20180101]-> (L1)
-CREATE (O1) -[:HAS {l_orderdate: 20170101]-> (L2)
-CREATE (O2) -[:HAS {l_orderdate: 20180101]-> (L3)
-CREATE (O3) -[:HAS {l_orderdate: 20180101]-> (L1)
-CREATE (O4) -[:HAS {l_orderdate: 20170101]-> (L5)
-CREATE (O4) -[:HAS {l_orderdate: 20180101]-> (L1)
+CREATE (O1) -[:HAS {l_orderdate: 20180101}]-> (L1)
+CREATE (O1) -[:HAS {l_orderdate: 20170101}]-> (L2)
+CREATE (O2) -[:HAS {l_orderdate: 20180101}]-> (L3)
+CREATE (O3) -[:HAS {l_orderdate: 20180101}]-> (L1)
+CREATE (O4) -[:HAS {l_orderdate: 20170101}]-> (L5)
+CREATE (O4) -[:HAS {l_orderdate: 20180101}]-> (L1)
 
 //Supplier -[ps_supplycost]-> Part
 
@@ -94,3 +94,44 @@ CREATE (Europe) -[:HAS]-> (Germany)
 CREATE (America) -[:HAS]-> (USA)
 CREATE (America) -[:HAS]-> (Canada)
 
+//Partsize -> Part
+
+CREATE (Psz10) -[:HAS]-> (P1)
+CREATE (Psz30) -[:HAS]-> (P2)
+CREATE (Psz20) -[:HAS]-> (P3)
+CREATE (Psz10) -[:HAS]-> (P4)
+
+//Parttype -> Part
+
+CREATE (PtyA) -[:HAS]-> (P1)
+CREATE (PtyB) -[:HAS]-> (P2)
+CREATE (PtyD) -[:HAS]-> (P3)
+CREATE (PtyC) -[:HAS]-> (P4)
+
+
+
+//Query1
+
+MATCH ( l:Lineitem )
+WHERE l.l_shipdate <= 20160101
+WITH
+    l.l_returnflag AS l_returnflag,
+    l.l_linestatus AS l_linestatus,
+    SUM(l.l_quantity) AS sum_qty,
+    SUM(l.l_extendedprice) AS sum_base_price,
+    SUM(l.l_extendedprice * ( 1 - l.l_discount)) AS sum_disc_price,
+    SUM(l.l_extendedprice * (1 - l.l_discount) * (1 + l.l_tax)) AS sum_charge,
+    AVG(l.l_quantity) AS avg_qty,
+    AVG(l.l_extendedprice) AS avg_price,
+    AVG(l.l_discount) AS avg_disc,
+    COUNT(*) AS count_order
+RETURN
+    l_returnflag, l_linestatus, sum_qty, sum_base_price, sum_disc_price, sum_charge, avg_qty, avg_price, avg_disc, count_order
+
+ORDER BY l_returnflag, l_linestatus;
+
+//Query2
+
+//Query3
+
+//Query4
