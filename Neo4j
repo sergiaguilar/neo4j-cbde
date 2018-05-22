@@ -72,6 +72,7 @@ CREATE (S1) -[:SUPPLIES {ps_supplycost: 3}]-> (P2)
 CREATE (S2) -[:SUPPLIES {ps_supplycost: 2}]-> (P1)
 CREATE (S3) -[:SUPPLIES {ps_supplycost: 2}]-> (P4)
 CREATE (S4) -[:SUPPLIES {ps_supplycost: 5}]-> (P3)
+CREATE (S3) -[:SUPPLIES {ps_supplycost: 6}]-> (P1)
 
 //Mktsegment -> Order
 
@@ -149,12 +150,12 @@ ORDER BY l_returnflag, l_linestatus;
 
 //Query2
 
-MATCH (psize:Partsize) -[:HAS]-> (p:part)
+MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASSUPPLIER]-> (s:Supplier) -[ps:SUPPLIES]-> (p:Part)
+WHERE r.r_name = "America"
+MATCH (psize:Partsize) -[:HAS]-> (p)
 WHERE psize.partsize = 10
 MATCH (pty:Parttype) -[:HAS]-> (p)
 WHERE pty.parttype = "A"
-MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASSUPPLIER]-> (s:Supplier) -[ps:SUPPLIES]-> (p)
-WHERE r.r_name = "America"
 WITH n.n_name AS n_name, s, p, MIN(ps.ps_supplycost) as minps
 RETURN
     s.s_acctbal,
@@ -177,7 +178,7 @@ WHERE o.o_orderdate < 20171223
 MATCH (o)-[:HAS]->(l:Lineitem) 
 WHERE l.l_shipdate > 20150101 
 RETURN o.o_orderkey, SUM(l.l_extendedprice * (1-l.l_discount)) AS revenue, o.o_orderdate, o.o_shippriority 
-ORDER BY revenue DESC, o.o_orderdate
+ORDER BY revenue DESC, o.o_orderdate;
 
 //Query4
 
