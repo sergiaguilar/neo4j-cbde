@@ -174,7 +174,7 @@ ORDER BY
 
 //Query3
 
-MATCH (c:Mktsegment)- [:HAS]-> (o:Order) 
+MATCH (c:Mktsegment) -[:HAS]-> (o:Order) 
 WHERE o.o_orderdate < 20171223 AND c.c_mktsegment="MK1"
 MATCH (o)-[:HAS]->(l:Lineitem) 
 WHERE l.l_shipdate > 20150101 
