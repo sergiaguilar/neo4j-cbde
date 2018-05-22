@@ -173,12 +173,20 @@ ORDER BY
     p.p_partkey;
 
 //Query3
+
 MATCH (c:Mktsegment {c_mktsegment:"MK1"})- [:HAS]-> (o:Order) 
 WHERE o.o_orderdate < 20171223 
 MATCH (o)-[:HAS]->(l:Lineitem) 
 WHERE l.l_shipdate > 20150101 
-RETURN o.o_orderkey, SUM(l.l_extendedprice * (1-l.l_discount)) AS revenue, o.o_orderdate, o.o_shippriority 
-ORDER BY revenue DESC, o.o_orderdate;
+WITH o, SUM(l.l_extendedprice * (1-l.l_discount)) AS revenue
+RETURN 
+	o.o_orderkey, 
+	revenue,
+	o.o_orderdate, 
+	o.o_shippriority 
+ORDER BY 
+	revenue DESC, 
+	o.o_orderdate;
 
 //Query4
 
