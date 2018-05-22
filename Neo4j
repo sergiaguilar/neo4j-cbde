@@ -131,7 +131,7 @@ CREATE (Canada) -[:HASSUPPLIER]-> (S4)
 //Query1
 
 MATCH ( l:Lineitem )
-WHERE l.l_shipdate <= 20160101
+WHERE l.l_shipdate <= 20180101
 WITH
     l.l_returnflag AS l_returnflag,
     l.l_linestatus AS l_linestatus,
