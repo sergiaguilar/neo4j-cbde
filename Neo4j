@@ -152,15 +152,16 @@ ORDER BY l_returnflag, l_linestatus;
 
 MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASSUPPLIER]-> (s:Supplier) -[ps:SUPPLIES]-> (p:Part)
 WHERE r.r_name = "America"
+WITH MIN(ps.ps_supplycost) AS minps, p
 MATCH (psize:Partsize) -[:HAS]-> (p)
 WHERE psize.partsize = 10
 MATCH (pty:Parttype) -[:HAS]-> (p)
 WHERE pty.parttype = "A"
-WITH n.n_name AS n_name, s, p, MIN(ps.ps_supplycost) as minps
+MATCH (r:Region) -[:HAS]-> (n) -[:HASSUPPLIER]-> (s) -[ps:SUPPLIER {ps_supplycost : minps}] -> (p)
 RETURN
     s.s_acctbal,
     s.s_name,
-    n_name,
+    n.n_name,
     p.p_partkey,
     p.p_mfgr,
     s.s_address,
@@ -168,7 +169,7 @@ RETURN
     s.s_comment
 ORDER BY
     s.s_acctbal DESC,
-    n_name,
+    n.n_name,
     s.s_name,
     p.p_partkey;
 
