@@ -193,8 +193,7 @@ ORDER BY
 
 MATCH (o:Order) -[:HAS]-> (l:Lineitem) -[:HAS]-> (s:Supplier)
 WHERE o.o_orderdate >= 20170101 AND o.o_orderdate <= 20180101
-MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASSUPPLIER]-> (s) <-[:HASLINEITEM {SameNationAsClient: 1}]- (:Nation)
-WHERE r.r_name = "America"
+MATCH (r:Region) -[:HAS]-> (n:Nation) -[:HASLINEITEM {SameNationAsClient: 1}]-> (l)
 WITH n, SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
 RETURN n.n_name, revenue
 ORDER BY revenue DESC;
