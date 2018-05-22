@@ -37,11 +37,11 @@ CREATE(PtyD: Parttype { parttype: "D"})
 
 //Lineitems
 
-CREATE(L1: Lineitem {l_returnflag: "A", l_linestatus: "Y", l_quantity: 10, l_extendedprice: 23.3, l_discount: 10, l_tax: 10, l_shipdate: 20170101})
-CREATE(L2: Lineitem {l_returnflag: "B", l_linestatus: "Y", l_quantity: 15, l_extendedprice: 50.2, l_discount: 15, l_tax: 7, l_shipdate: 20160101})
-CREATE(L3: Lineitem {l_returnflag: "A", l_linestatus: "Y", l_quantity: 8, l_extendedprice: 21.7, l_discount: 10, l_tax: 7, l_shipdate: 20170101})
-CREATE(L4: Lineitem {l_returnflag: "A", l_linestatus: "N", l_quantity: 3, l_extendedprice: 5.2, l_discount: 5, l_tax: 21, l_shipdate: 20180101})
-CREATE(L5: Lineitem {l_returnflag: "B", l_linestatus: "N", l_quantity: 7, l_extendedprice: 10.8, l_discount: 2, l_tax: 10, l_shipdate: 20180101})
+CREATE(L1: Lineitem {l_returnflag: "A", l_linestatus: "Y", l_quantity: 10, l_extendedprice: 23.3, l_discount: 0.1, l_tax: 0.1, l_shipdate: 20170101})
+CREATE(L2: Lineitem {l_returnflag: "B", l_linestatus: "Y", l_quantity: 15, l_extendedprice: 50.2, l_discount: 0.15, l_tax: 0.07, l_shipdate: 20160101})
+CREATE(L3: Lineitem {l_returnflag: "A", l_linestatus: "Y", l_quantity: 8, l_extendedprice: 21.7, l_discount: 0.1, l_tax: 0.07, l_shipdate: 20170101})
+CREATE(L4: Lineitem {l_returnflag: "A", l_linestatus: "N", l_quantity: 3, l_extendedprice: 5.2, l_discount: 0.05, l_tax: 0.21, l_shipdate: 20180101})
+CREATE(L5: Lineitem {l_returnflag: "B", l_linestatus: "N", l_quantity: 7, l_extendedprice: 10.8, l_discount: 0.02, l_tax: 0.1, l_shipdate: 20180101})
 
 //Orders
 
